@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import tn.esprit.SkiStationProject.entities.*;
 import tn.esprit.SkiStationProject.entities.enums.Support;
+import tn.esprit.SkiStationProject.entities.enums.TypeCourse;
 import tn.esprit.SkiStationProject.repositories.*;
 import tn.esprit.SkiStationProject.services.RegistrationServicesImpl;
 
@@ -66,8 +67,8 @@ public class RegistrationServicesImplTest {
     public void testAddRegistrationAndAssignToSkierAndCourse() {
         Skier skier = new Skier();
         skier.setDateOfBirth(LocalDate.of(1990, 1, 1)); // Set a valid date of birth
-        skier.setSubscription(new Subscription()); // Initialize Subscription
         Course course = new Course();
+        course.setTypeCourse(TypeCourse.INDIVIDUAL); // Set a valid TypeCourse enum value
         Registration registration = new Registration();
         registration.setNumWeek(1);
         registration.setSkier(skier);
@@ -81,6 +82,7 @@ public class RegistrationServicesImplTest {
         assertEquals(skier, result.getSkier());
         assertEquals(course, result.getCourse());
     }
+
 
 
     @Test
