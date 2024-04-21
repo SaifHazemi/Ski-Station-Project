@@ -1,5 +1,4 @@
 package tn.esprit.SkiStationProject.ProjectTest;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -56,47 +55,6 @@ class SkierServicesTest {
     }
 
     @Test
-    void retrieveAllSkiers() {
-        // Mocking repository behavior
-        List<Skier> skiers = Collections.singletonList(new Skier("John", "Doe", LocalDate.of(1990, 5, 15), "City", null, new HashSet<>(), new HashSet<>()));
-        when(skierRepository.findAll()).thenReturn(skiers);
-
-        // Calling the method under test
-        List<Skier> retrievedSkiers = skierServices.retrieveAllSkiers();
-
-        // Verifying the result
-        assertEquals(skiers, retrievedSkiers);
-    }
-
-    @Test
-    void addSkier() {
-        // Mocking repository behavior
-        Skier skierToAdd = new Skier("John", "Doe", LocalDate.of(1990, 5, 15), "City", null, new HashSet<>(), new HashSet<>());
-        when(skierRepository.save(skierToAdd)).thenReturn(skierToAdd);
-
-        // Calling the method under test
-        Skier addedSkier = skierServices.addSkier(skierToAdd);
-
-        // Verifying the result
-        assertEquals(skierToAdd, addedSkier);
-    }
-
-    @Test
-    void assignSkierToSubscription() {
-        // Mocking repository behavior
-        Skier skier = new Skier("John", "Doe", LocalDate.of(1990, 5, 15), "City", null, new HashSet<>(), new HashSet<>());
-        Subscription subscription = new Subscription(LocalDate.now(), LocalDate.now().plusMonths(1), 100.0f, TypeSubscription.MONTHLY);
-        when(skierRepository.findById(1L)).thenReturn(Optional.of(skier));
-        when(subscriptionRepository.findById(1L)).thenReturn(Optional.of(subscription));
-
-        // Calling the method under test
-        Skier assignedSkier = skierServices.assignSkierToSubscription(1L, 1L);
-
-        // Verifying the result
-        assertEquals(subscription, assignedSkier.getSubscription());
-    }
-
-    @Test
     void addSkierAndAssignToCourse() {
         // Mocking repository behavior
         Skier skier = new Skier("John", "Doe", LocalDate.of(1990, 5, 15), "City", null, new HashSet<>(), new HashSet<>());
@@ -133,6 +91,47 @@ class SkierServicesTest {
         // Verifying the result
         assertEquals(skier, retrievedSkier);
     }
+    @Test
+    void retrieveAllSkiers() {
+        // Mocking repository behavior
+        List<Skier> skiers = Collections.singletonList(new Skier("John", "Doe", LocalDate.of(1990, 5, 15), "City", null, new HashSet<>(), new HashSet<>()));
+        when(skierRepository.findAll()).thenReturn(skiers);
+
+        // Calling the method under test
+        List<Skier> retrievedSkiers = skierServices.retrieveAllSkiers();
+
+        // Verifying the result
+        assertEquals(skiers, retrievedSkiers);
+    }
+
+    @Test
+    void addSkier() {
+        // Mocking repository behavior
+        Skier skierToAdd = new Skier("John", "Doe", LocalDate.of(1990, 5, 15), "City", null, new HashSet<>(), new HashSet<>());
+        when(skierRepository.save(skierToAdd)).thenReturn(skierToAdd);
+
+        // Calling the method under test
+        Skier addedSkier = skierServices.addSkier(skierToAdd);
+
+        // Verifying the result
+        assertEquals(skierToAdd, addedSkier);
+    }
+
+    @Test
+    void assignSkierToSubscription() {
+        // Mocking repository behavior
+        Skier skier = new Skier("John", "Doe", LocalDate.of(1990, 5, 15), "City", null, new HashSet<>(), new HashSet<>());
+        Subscription subscription = new Subscription(LocalDate.now(), LocalDate.now().plusMonths(1), 100.0f, TypeSubscription.MONTHLY);
+        when(skierRepository.findById(1L)).thenReturn(Optional.of(skier));
+        when(subscriptionRepository.findById(1L)).thenReturn(Optional.of(subscription));
+        when(skierRepository.save(any(Skier.class))).thenReturn(skier); // Mocking save method
+
+        // Calling the method under test
+        Skier assignedSkier = skierServices.assignSkierToSubscription(1L, 1L);
+
+        // Verifying the result
+        assertEquals(subscription, assignedSkier.getSubscription());
+    }
 
     @Test
     void assignSkierToPiste() {
@@ -141,6 +140,7 @@ class SkierServicesTest {
         Piste piste = new Piste("Red", Color.RED, 1000, 50, new HashSet<>());
         when(skierRepository.findById(1L)).thenReturn(Optional.of(skier));
         when(pisteRepository.findById(1L)).thenReturn(Optional.of(piste));
+        when(skierRepository.save(any(Skier.class))).thenReturn(skier); // Mocking save method
 
         // Calling the method under test
         Skier assignedSkier = skierServices.assignSkierToPiste(1L, 1L);
@@ -149,7 +149,6 @@ class SkierServicesTest {
         assertEquals(1, assignedSkier.getPistes().size());
         assertEquals(piste, assignedSkier.getPistes().iterator().next());
     }
-
 
     @Test
     void retrieveSkiersBySubscriptionType() {
