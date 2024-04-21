@@ -31,7 +31,7 @@ public class PisteServicesImplTest {
     }
 
     @Test
-    public void testRetrieveAllPistes() {
+    void testRetrieveAllPistes() {
         // Given
         List<Piste> pistes = new ArrayList<>();
         pistes.add(new Piste());
@@ -47,7 +47,7 @@ public class PisteServicesImplTest {
     }
 
     @Test
-    public void testAddPiste() {
+    void testAddPiste() {
         // Given
         Piste pisteToAdd = new Piste();
         when(pisteRepository.save(pisteToAdd)).thenReturn(pisteToAdd);
@@ -61,7 +61,7 @@ public class PisteServicesImplTest {
     }
 
     @Test
-    public void testRemovePiste() {
+    void testRemovePiste() {
         // Given
         Long pisteIdToRemove = 1L;
 
@@ -73,7 +73,7 @@ public class PisteServicesImplTest {
     }
 
     @Test
-    public void testRetrievePiste() {
+    void testRetrievePiste() {
         // Given
         Long pisteId = 1L;
         Piste piste = new Piste();
@@ -88,7 +88,7 @@ public class PisteServicesImplTest {
     }
 
     @Test
-    public void testRetrievePiste_NotFound() {
+    void testRetrievePiste_NotFound() {
         // Given
         Long pisteId = 1L;
         when(pisteRepository.findById(pisteId)).thenReturn(Optional.empty());
