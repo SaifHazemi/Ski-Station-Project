@@ -66,6 +66,7 @@ public class RegistrationServicesImplTest {
     public void testAddRegistrationAndAssignToSkierAndCourse() {
         Skier skier = new Skier();
         skier.setDateOfBirth(LocalDate.of(1990, 1, 1)); // Set a valid date of birth
+        skier.setSubscription(new Subscription()); // Initialize Subscription
         Course course = new Course();
         Registration registration = new Registration();
         registration.setNumWeek(1);
@@ -73,19 +74,20 @@ public class RegistrationServicesImplTest {
         registration.setCourse(course);
         when(skierRepository.findById(anyLong())).thenReturn(Optional.of(skier));
         when(courseRepository.findById(anyLong())).thenReturn(Optional.of(course));
-        when(registrationRepository.countDistinctByNumWeekAndSkier_NumSkierAndCourse_NumCourse(anyInt(), anyLong(), anyLong())).thenReturn(0L); // Use 0L for long return type
-        when(registrationRepository.countByCourseAndNumWeek(any(Course.class), anyInt())).thenReturn(0L); // Use 0L for long return type
+        when(registrationRepository.countDistinctByNumWeekAndSkier_NumSkierAndCourse_NumCourse(anyInt(), anyLong(), anyLong())).thenReturn(0L);
+        when(registrationRepository.countByCourseAndNumWeek(any(Course.class), anyInt())).thenReturn(0L);
         Registration result = registrationService.addRegistrationAndAssignToSkierAndCourse(registration, 1L, 1L);
         assertNotNull(result);
         assertEquals(skier, result.getSkier());
         assertEquals(course, result.getCourse());
     }
 
+
     @Test
     public void testNumWeeksCourseOfInstructorBySupport() {
         Instructor instructor = new Instructor();
         Course course = new Course();
-        course.setSupport(Support.SKI); // Set a valid Support enum value
+        course.setSupport(Support.SKI); // Ensure Support enum value is set
         Registration registration = new Registration();
         registration.setNumWeek(1);
         registration.setCourse(course);
@@ -101,5 +103,4 @@ public class RegistrationServicesImplTest {
         assertTrue(result.contains(2));
         assertTrue(result.contains(3));
     }
-
 }
