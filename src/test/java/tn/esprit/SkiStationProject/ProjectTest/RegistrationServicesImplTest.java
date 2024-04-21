@@ -35,12 +35,12 @@ public class RegistrationServicesImplTest {
     private RegistrationServicesImpl registrationService;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void testAddRegistrationAndAssignToSkier() {
+    void testAddRegistrationAndAssignToSkier() {
         Skier skier = new Skier();
         Registration registration = new Registration();
         when(skierRepository.findById(anyLong())).thenReturn(Optional.of(skier));
@@ -51,7 +51,7 @@ public class RegistrationServicesImplTest {
     }
 
     @Test
-    public void testAssignRegistrationToCourse() {
+    void testAssignRegistrationToCourse() {
         Course course = new Course();
         Registration registration = new Registration();
         when(registrationRepository.findById(anyLong())).thenReturn(Optional.of(registration));
@@ -62,7 +62,7 @@ public class RegistrationServicesImplTest {
     }
 
     @Test
-    public void testAddRegistrationAndAssignToSkierAndCourse() {
+    void testAddRegistrationAndAssignToSkierAndCourse() {
         Skier skier = new Skier();
         Course course = new Course();
         Registration registration = new Registration();
@@ -80,7 +80,7 @@ public class RegistrationServicesImplTest {
     }
 
     @Test
-    public void testNumWeeksCourseOfInstructorBySupport() {
+    void testNumWeeksCourseOfInstructorBySupport() {
         Instructor instructor = new Instructor();
         Course course = new Course();
         Registration registration = new Registration();
