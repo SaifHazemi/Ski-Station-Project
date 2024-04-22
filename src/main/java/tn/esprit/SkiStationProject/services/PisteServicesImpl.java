@@ -32,4 +32,5 @@ public class PisteServicesImpl implements  IPisteServices{
         return pisteRepository.findById(numPiste)
                 .orElseThrow(() -> new IllegalArgumentException("no piste found with this id " + numPiste));
     }
+
 }

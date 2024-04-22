@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,8 +36,8 @@ public class RegistrationServicesImpl implements  IRegistrationServices{
     public Registration addRegistrationAndAssignToSkier(Registration registration, Long numSkier) {
         Skier skier = skierRepository.findById(numSkier).orElseThrow(() -> new IllegalArgumentException("no skier found with this id " + numSkier));
         registration.setSkier(skier);
-         registrationRepository.save(registration);
-         return registration;
+        registrationRepository.save(registration);
+        return registration;
     }
 
     @Override
@@ -112,20 +113,15 @@ public class RegistrationServicesImpl implements  IRegistrationServices{
 
     @Override
     public List<Integer> numWeeksCourseOfInstructorBySupport(Long numInstructor, Support support) {
+        Instructor instructor = instructorRepository.findById(numInstructor)
+                .orElseThrow(() -> new IllegalArgumentException("No Instructor Found with this id " + numInstructor));
 
-        Map<Course, List<Integer>> map = instructorRepository.findById(numInstructor)
-                .orElseThrow(() -> new IllegalArgumentException("No Instructor Found with this id " + numInstructor))
-                .getCourses().stream()
-                .filter(course -> course.getSupport().equals(support))
-                .map(Course::getRegistrations)
-                .flatMap(Collection::stream)
-               // .map(Registration::getNumWeek)
-                .collect(Collectors.groupingBy(
-                        Registration::getCourse,
-                        Collectors.mapping(Registration::getNumWeek, Collectors.toList())
-                ));
-
-        return registrationRepository.numWeeksCourseOfInstructorBySupport(numInstructor, support);
+        List<Integer> numWeeks = registrationRepository.numWeeksCourseOfInstructorBySupport(numInstructor, support);
+        if(numWeeks == null) {
+            return Collections.emptyList(); // Return an empty list or handle the null case appropriately
+        }
+        return numWeeks;
     }
+
 
 }

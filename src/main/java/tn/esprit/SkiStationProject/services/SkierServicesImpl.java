@@ -8,6 +8,7 @@ import tn.esprit.SkiStationProject.repositories.*;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -76,13 +77,32 @@ public class SkierServicesImpl implements ISkierServices {
         return skierRepository.findById(numSkier).orElse(null);
     }
 
-    @Override
-    public Skier assignSkierToPiste(Long numSkieur, Long numPiste) {
-        Skier skier = skierRepository.findById(numSkieur).orElse(null);
-        Piste piste = pisteRepository.findById(numPiste).orElse(null);
-        skier.getPistes().add(piste);
-        return skierRepository.save(skier);
+    public Skier assignSkierToPiste(Long skierId, Long pisteId) {
+        Optional<Skier> skierOptional = skierRepository.findById(skierId);
+        Optional<Piste> pisteOptional = pisteRepository.findById(pisteId);
+
+        if (skierOptional.isPresent() && pisteOptional.isPresent()) {
+            Skier skier = skierOptional.get();
+            Piste piste = pisteOptional.get();
+
+            // Check if the skier is already assigned to the piste
+            if (skier.getPistes().contains(piste)) {
+                // Skier is already assigned to the piste, no need to reassign
+                return skier;
+            }
+
+            // Assign the skier to the piste
+            skier.getPistes().add(piste);
+            skierRepository.save(skier); // Save the updated skier object
+
+            return skier;
+        } else {
+            // Skier or piste not found
+            return null;
+        }
     }
+
+
 
     @Override
     public List<Skier> retrieveSkiersBySubscriptionType(TypeSubscription typeSubscription) {
