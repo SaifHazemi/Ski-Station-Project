@@ -14,7 +14,7 @@ services:
     image: springboot-restful-webservices
     container_name: springboot-restful-webservices
     ports:
-      - "9090:9090"
+      - "9090:9090" 
     depends_on:
       - mysql
     environment:
