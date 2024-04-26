@@ -104,5 +104,36 @@
             </plugin>
         </plugins>
     </build>
-
+   <profiles>
+      <profile>
+         <id>dev</id>
+         <properties>
+            <env>src/main/resources/Dev</env>
+            <maven.test.skip>true</maven.test.skip>
+         </properties>
+         <activation>
+            <activeByDefault>true</activeByDefault>
+         </activation>
+      </profile>
+      <profile>
+         <id>prod</id>
+         <properties>
+            <env>src/main/resources/Preprod</env>
+            <maven.test.skip>true</maven.test.skip>
+         </properties>
+      </profile>
+      <profile>
+         <id>test</id>
+         <properties>
+            <env>src/main/resources/Test</env>
+         </properties>
+         <dependencies>
+            <dependency>
+               <groupId>com.h2database</groupId>
+               <artifactId>h2</artifactId>
+               <scope>runtime</scope>
+            </dependency>
+         </dependencies>
+      </profile>
+   </profiles>
 </project>
