@@ -10,9 +10,9 @@ services:
     ports:
       - "3306:3306"
 
-  springboot-restful-webservices:
-    image: springboot-restful-webservices
-    container_name: springboot-restful-webservices
+  springboot:
+    image: spring_ssp
+    container_name: project-container
     ports:
       - "9090:9090"
     depends_on:
