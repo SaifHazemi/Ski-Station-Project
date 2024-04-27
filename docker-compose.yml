@@ -25,6 +25,5 @@ services:
       - SPRING_PROFILES_ACTIVE=prod
     volumes:
       - /home/ubuntu22_saif/Ski-Station-Project-volume
-
 volumes:
   mysql_data:
